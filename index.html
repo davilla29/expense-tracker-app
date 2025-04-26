@@ -1,0 +1,79 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Expense Tracker - David</title>
+    <link rel="stylesheet" href="index.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Expense Tracker</h1>
+
+      <form id="transaction-form">
+        <input type="text" id="name" placeholder="Name" required />
+        <input type="number" id="amount" placeholder="Amount" required />
+        <select id="type" class="category-picker">
+          <option value="Income">Income</option>
+          <option value="Expense">Expense</option>
+        </select>
+        <button type="submit">Add Transaction</button>
+      </form>
+
+      <div class="summary">
+        <p>Total Income: ₦<span id="total-income">0</span></p>
+        <p>Total Expense: ₦<span id="total-expense">0</span></p>
+        <p>Balance :₦<span id="balance">0</span></p>
+      </div>
+
+      <div class="transactions-top">
+        <h3>All transactions</h3>
+        <div class="filter">
+          <label for="category-filter">Filter: </label>
+          <select id="category-filter">
+            <option value="All">All</option>
+            <option value="Income">Income</option>
+            <option value="Expense">Expense</option>
+          </select>
+        </div>
+      </div>
+      <ul id="transaction-list"></ul>
+
+      <!-- Chart Section -->
+      <section id="charts">
+       
+        <div class="chart-container">
+          <!-- <div class="chart-box">
+            <h3>Bar Chart</h3>
+            <canvas id="bar-chart"></canvas>
+          </div> -->
+          <div class="chart-box">
+            <h2>Doughnut Chart</h2>
+            <canvas id="doughnut-chart"></canvas>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Modal -->
+    <div id="edit-modal" class="modal hidden">
+      <div class="modal-content">
+        <span id="close-modal" class="close">&times;</span>
+        <h2>Edit Transaction</h2>
+        <form id="edit-form">
+          <input type="text" id="edit-name" required />
+          <input type="number" id="edit-amount" required />
+          <select id="edit-type">
+            <option value="Income">Income</option>
+            <option value="Expense">Expense</option>
+          </select>
+          <button type="submit">Update</button>
+        </form>
+      </div>
+    </div>
+
+    <script src="index.js"></script>
+  </body>
+</html>
