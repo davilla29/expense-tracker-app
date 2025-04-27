@@ -6,27 +6,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Expense Tracker - David</title>
     <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="querie.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
   <body>
     <div class="container">
-      <h1>Expense Tracker</h1>
-
-      <form id="transaction-form">
-        <input type="text" id="name" placeholder="Name" required />
-        <input type="number" id="amount" placeholder="Amount" required />
-        <select id="type" class="category-picker">
-          <option value="Income">Income</option>
-          <option value="Expense">Expense</option>
-        </select>
-        <button type="submit">Add Transaction</button>
-      </form>
+      <div class="header">
+        <h1>Expense Tracker</h1>
+        <svg
+          id="open-add-modal"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 448 512"
+          style="cursor: pointer"
+        >
+          <path
+            fill="#ffffff"
+            d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 144L48 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l144 0 0 144c0 17.7 14.3 32 32 32s32-14.3 32-32l0-144 144 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-144 0 0-144z"
+          />
+        </svg>
+      </div>
 
       <div class="summary">
-        <p>Total Income: ₦<span id="total-income">0</span></p>
-        <p>Total Expense: ₦<span id="total-expense">0</span></p>
-        <p>Balance :₦<span id="balance">0</span></p>
+        <div class="tolBalance">
+          <p>Total Balance</p>
+          <p>₦<span id="balance">0</span></p>
+        </div>
+
+        <div class="total">
+          <div class="tol tolIncome">
+            <p>Total Income</p>
+            <p>₦<span id="total-income">0</span></p>
+          </div>
+          <div class="tol tolExpense">
+            <p>Total Expense</p>
+            <p>₦<span id="total-expense">0</span></p>
+          </div>
+        </div>
       </div>
+
+      <!-- Remove this form, because we'll put it inside the modal -->
+      <!-- <form id="transaction-form"> ... </form> -->
 
       <div class="transactions-top">
         <h3>All transactions</h3>
@@ -43,12 +62,7 @@
 
       <!-- Chart Section -->
       <section id="charts">
-       
         <div class="chart-container">
-          <!-- <div class="chart-box">
-            <h3>Bar Chart</h3>
-            <canvas id="bar-chart"></canvas>
-          </div> -->
           <div class="chart-box">
             <h2>Doughnut Chart</h2>
             <canvas id="doughnut-chart"></canvas>
@@ -57,7 +71,24 @@
       </section>
     </div>
 
-    <!-- Modal -->
+    <!-- Modal for ADD Transaction -->
+    <div id="add-modal" class="modal hidden">
+      <div class="modal-content">
+        <span id="close-add-modal" class="close">&times;</span>
+        <h2>Add Transaction</h2>
+        <form id="transaction-form">
+          <input type="text" id="name" placeholder="Name" required />
+          <input type="number" id="amount" placeholder="Amount" required />
+          <select id="type" class="category-picker">
+            <option value="Income">Income</option>
+            <option value="Expense">Expense</option>
+          </select>
+          <button type="submit">Add Transaction</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal for EDIT Transaction -->
     <div id="edit-modal" class="modal hidden">
       <div class="modal-content">
         <span id="close-modal" class="close">&times;</span>

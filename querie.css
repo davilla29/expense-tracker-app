@@ -1,0 +1,26 @@
+/* Responsive settings */
+@media (max-width: 768px) {
+  .summary {
+    flex-direction: column; /* stack vertically */
+    align-items: stretch; /* full width */
+    gap: 2rem;
+  }
+
+  /* .total {
+    align-items: stretch;
+  } */
+  .total {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .tol,
+  .tolBalance {
+    max-width: 100%;
+    width: 100%;
+    text-align: left;
+    padding: 1rem;
+  }
+}

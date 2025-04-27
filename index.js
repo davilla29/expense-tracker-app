@@ -1,4 +1,4 @@
-const transactions = JSON.parse(localStorage.getItem("transactions")) || [];
+const transactions = getTransactionsFromLocalStorage();
 let editingIndex = null;
 
 const form = document.getElementById("transaction-form");
@@ -22,16 +22,35 @@ const editName = document.getElementById("edit-name");
 const editAmount = document.getElementById("edit-amount");
 const editType = document.getElementById("edit-type");
 
+// Handle opening and closing the Add Transaction modal
+const openAddModal = document.getElementById("open-add-modal");
+const addModal = document.getElementById("add-modal");
+const closeAddModal = document.getElementById("close-add-modal");
+
+// Helper function to format amount with commas
+function formatAmount(amount) {
+  return amount.toLocaleString("en-NG", { minimumFractionDigits: 2 });
+}
+
 form.addEventListener("submit", (e) => {
   e.preventDefault();
+
   const transaction = {
     name: nameInput.value.trim(),
     amount: parseFloat(amountInput.value),
     type: typeInput.value,
   };
+
   if (!transaction.name || isNaN(transaction.amount)) return;
+
   transactions.push(transaction);
   updateData();
+
+  // Reset the form
+  form.reset();
+
+  // Close the add modal
+  addModal.classList.add("hidden");
 });
 
 list.addEventListener("click", (e) => {
@@ -47,6 +66,13 @@ list.addEventListener("click", (e) => {
     modal.classList.remove("hidden");
   }
   updateData();
+});
+
+// Optional: Close when clicking outside the modal
+window.addEventListener("click", (e) => {
+  if (e.target === addModal) {
+    addModal.classList.add("hidden");
+  }
 });
 
 editForm.addEventListener("submit", (e) => {
@@ -67,10 +93,24 @@ closeModal.addEventListener("click", () => modal.classList.add("hidden"));
 filter.addEventListener("change", updateData);
 
 function updateData() {
-  localStorage.setItem("transactions", JSON.stringify(transactions));
+  try {
+    localStorage.setItem("transactions", JSON.stringify(transactions));
+  } catch (error) {
+    console.error("Error saving data to localStorage", error);
+    // Optionally, you can alert the user or handle the error as needed
+  }
   renderList();
   renderSummary();
   renderCharts();
+}
+
+function getTransactionsFromLocalStorage() {
+  try {
+    return JSON.parse(localStorage.getItem("transactions")) || [];
+  } catch (error) {
+    console.error("Error reading data from localStorage", error);
+    return [];
+  }
 }
 
 function renderList() {
@@ -81,7 +121,7 @@ function renderList() {
   filtered.forEach((t, index) => {
     list.innerHTML += `
       <li class="${t.type.toLowerCase()}">
-        ${t.name} - ₦${t.amount.toFixed(2)} (${t.type})
+        ${t.name} - ₦${formatAmount(t.amount)} (${t.type})
         <div>
           <button class="edit" data-index="${index}">Edit</button>
           <button class="delete" data-index="${index}">Delete</button>
@@ -101,9 +141,9 @@ function renderSummary() {
     ),
     { income: 0, expense: 0 }
   );
-  incomeEl.textContent = income.toFixed(2);
-  expenseEl.textContent = expense.toFixed(2);
-  balanceEl.textContent = (income - expense).toFixed(2);
+  incomeEl.textContent = formatAmount(income);
+  expenseEl.textContent = formatAmount(expense);
+  balanceEl.textContent = formatAmount(income - expense);
 }
 
 function renderCharts() {
@@ -144,3 +184,11 @@ function renderCharts() {
 }
 
 updateData();
+
+openAddModal.addEventListener("click", () => {
+  addModal.classList.remove("hidden");
+});
+
+closeAddModal.addEventListener("click", () => {
+  addModal.classList.add("hidden");
+});
