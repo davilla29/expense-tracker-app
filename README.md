@@ -17,12 +17,8 @@ Visualization: Real-time bar and doughnut charts for income vs. expenses.
 Persistent Storage: Data is saved in localStorage.
 
 🛠 Technologies Used
-HTML5 — Structure
-
-CSS3 — Styling (including flexbox, transitions)
-
-JavaScript (ES6+) — Functionality
-
-localStorage API — Persistent client-side storage
-
-Chart.js — For bar and doughnut visualizations
+HTML5
+CSS3
+JavaScript
+localStorage API
+Chart.js
