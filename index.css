@@ -12,7 +12,7 @@ body {
 }
 
 .container {
-  max-width: 800px;
+  max-width: 900px;
   margin: 0 auto;
   background: #ffffff;
   padding: 30px;
@@ -34,6 +34,7 @@ body {
   cursor: pointer;
 }
 .summary {
+  width: 100%;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -59,21 +60,25 @@ body {
 
 .tol {
   background-color: #ffffff;
-  padding: 1.5rem 4.5rem;
+  padding: 1.5rem 3.5rem;
   border-radius: 1rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  text-align: left;
-  min-width: 150px;
+  /* text-align: left; */
+  width: 350px;
+  font-size: 1.5rem;
 }
 
 .tol p {
-  font-size: 1rem;
-  font-weight: 500;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  width: 100%;
+  font-weight: bold;
   color: #555;
 }
 
 .tol span {
-  font-size: 1.3rem;
+  /* font-size: 1.3rem; */
   font-weight: bold;
   color: #333;
 }
@@ -143,6 +148,56 @@ li {
 /* #transaction-list button {
 } */
 
+.filter {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.filter label {
+  margin-right: 0.25rem;
+}
+
+.filter select,
+.filter input[type="date"] {
+  padding: 0.4rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+/* Container if needed */
+.filter label,
+.filter input[type="date"] {
+  margin-right: 10px;
+}
+
+/* Label styling */
+label[for="date-filter"] {
+  font-weight: 500;
+  font-size: 1rem;
+  color: #333;
+}
+
+/* Date input styling */
+#date-filter {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #fff;
+  color: #333;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.3s ease;
+  cursor: pointer;
+}
+
+/* Hover and focus states */
+#date-filter:hover,
+#date-filter:focus {
+  border-color: #4caf50; /* or any accent color */
+  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2); /* subtle glow */
+}
+
 .income {
   border-left: 5px solid green;
 }
@@ -190,12 +245,13 @@ li {
   padding: 20px 30px;
   border-radius: 10px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
-  width: 90%;
-  max-width: 400px;
+  max-width: 500px;
+  height: 60%;
   position: relative;
 }
 
 .modal-content h2 {
+  margin-top: 1rem;
   margin-bottom: 1rem;
 }
 
@@ -203,15 +259,16 @@ li {
 .modal-content select,
 .modal-content button {
   width: 100%;
-  padding: 10px;
-  margin-top: 10px;
+  padding: 0.8rem;
+  margin-top: 1rem;
+  font-size: 1.3rem;
 }
 
 .close {
   position: absolute;
   top: -0.4rem;
   right: 1rem;
-  font-size: 3rem;
+  font-size: 4rem;
   cursor: pointer;
 }
 

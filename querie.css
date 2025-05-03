@@ -1,7 +1,44 @@
 /* Responsive settings */
+@media (max-width: 880px) {
+  .summary {
+    max-width: 700px;
+    margin: 2rem auto;
+  }
+
+  .summary {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .total {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  li {
+    font-size: 1.7rem;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  #transaction-list button {
+    font-size: 1.5rem;
+  }
+
+  .tol,
+  .tolBalance {
+    max-width: 100%;
+    width: 100%;
+    text-align: left;
+    padding: 1rem;
+  }
+}
 @media (max-width: 768px) {
   .summary {
-    flex-direction: column; 
+    flex-direction: column;
     gap: 2rem;
   }
 
@@ -70,6 +107,16 @@
     font-size: 11rem;
 
     color: #333;
+  }
+
+  li {
+    font-size: 1.2rem;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  #transaction-list button {
+    font-size: 1rem;
   }
 
   #category-filter {

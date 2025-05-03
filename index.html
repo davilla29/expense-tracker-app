@@ -44,16 +44,18 @@
         </div>
       </div>
 
-   
       <div class="transactions-top">
         <h2>All transactions</h2>
         <div class="filter">
-          <label for="category-filter">Filter: </label>
+          <label for="category-filter">Category:</label>
           <select id="category-filter">
             <option value="All">All</option>
             <option value="Income">Income</option>
             <option value="Expense">Expense</option>
           </select>
+
+          <label for="date-filter">Date:</label>
+          <input type="date" id="date-filter" />
         </div>
       </div>
       <ul id="transaction-list"></ul>

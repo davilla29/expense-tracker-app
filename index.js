@@ -7,6 +7,7 @@ const amountInput = document.getElementById("amount");
 const typeInput = document.getElementById("type");
 const list = document.getElementById("transaction-list");
 const filter = document.getElementById("category-filter");
+const dateFilter = document.getElementById("date-filter");
 const incomeEl = document.getElementById("total-income");
 const expenseEl = document.getElementById("total-expense");
 const balanceEl = document.getElementById("balance");
@@ -28,7 +29,6 @@ const openAddModal = document.getElementById("open-add-modal");
 const addModal = document.getElementById("add-modal");
 const closeAddModal = document.getElementById("close-add-modal");
 
-// Helper function to format amount with commas
 function formatAmount(amount) {
   return amount.toLocaleString("en-NG", { minimumFractionDigits: 2 });
 }
@@ -44,13 +44,26 @@ function getTransactionsFromLocalStorage() {
 
 function renderList() {
   list.innerHTML = "";
+  const selectedDate = dateFilter.value;
   const filtered = transactions.filter(
-    (t) => filter.value === "All" || t.type === filter.value
+    (t) =>
+      (filter.value === "All" || t.type === filter.value) &&
+      (selectedDate === "" || t.date === selectedDate)
   );
+
+  if (filtered.length === 0) {
+    list.innerHTML = `<li>No transactions found for the selected filter(s).</li>`;
+    return;
+  }
+
   filtered.forEach((t, index) => {
     list.innerHTML += `
       <li class="${t.type.toLowerCase()}">
-        ${t.name} - ₦${formatAmount(t.amount)} 
+        <div>
+          <p><strong>${t.name}</strong></p> 
+          <p>₦${formatAmount(t.amount)}</p>
+          <p>${t.date} | ${t.time}</p>
+        </div>
         <div>
           <button class="edit" data-index="${index}">Edit</button>
           <button class="delete" data-index="${index}">Delete</button>
@@ -61,7 +74,18 @@ function renderList() {
 }
 
 function renderSummary() {
-  const { income, expense } = transactions.reduce(
+  const selectedCategory = filter.value;
+  const selectedDate = dateFilter.value;
+
+  // Filter the transactions based on selected filters (category and date)
+  const filteredTransactions = transactions.filter(
+    (t) =>
+      (selectedCategory === "All" || t.type === selectedCategory) &&
+      (selectedDate === "" || t.date === selectedDate)
+  );
+
+  // Calculate total income, expense, and balance for filtered transactions
+  const { income, expense } = filteredTransactions.reduce(
     (acc, t) => (
       t.type === "Income"
         ? (acc.income += t.amount)
@@ -70,13 +94,19 @@ function renderSummary() {
     ),
     { income: 0, expense: 0 }
   );
+
+  // Update the displayed totals
   incomeEl.textContent = formatAmount(income);
   expenseEl.textContent = formatAmount(expense);
   balanceEl.textContent = formatAmount(income - expense);
+
+  // Also update the chart with the new income and expense
+  renderCharts(filteredTransactions);
 }
 
-function renderCharts() {
-  const { income, expense } = transactions.reduce(
+function renderCharts(filteredTransactions) {
+  // Calculate total income and expense for the filtered transactions
+  const { income, expense } = filteredTransactions.reduce(
     (acc, t) => (
       t.type === "Income"
         ? (acc.income += t.amount)
@@ -97,6 +127,7 @@ function renderCharts() {
     ],
   };
 
+  // Destroy the old chart if it exists before creating a new one
   doughnutChart?.destroy();
 
   doughnutChart = new Chart(doughnutChartEl, {
@@ -114,16 +145,21 @@ function updateData() {
   }
   renderList();
   renderSummary();
-  renderCharts();
 }
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
 
+  const now = new Date();
+  const date = now.toISOString().split("T")[0];
+  const time = now.toLocaleTimeString();
+
   const transaction = {
     name: nameInput.value.trim(),
     amount: parseFloat(amountInput.value),
     type: typeInput.value,
+    date,
+    time,
   };
 
   if (!transaction.name || isNaN(transaction.amount)) return;
@@ -131,14 +167,10 @@ form.addEventListener("submit", (e) => {
   transactions.push(transaction);
   updateData();
 
-  // To reset the form
   form.reset();
-
-  // To close the add modal
   addModal.classList.add("hidden");
 });
 
-// Using event delegation to add an event listener
 list.addEventListener("click", (e) => {
   const index = e.target.dataset.index;
   if (e.target.classList.contains("delete")) {
@@ -154,7 +186,6 @@ list.addEventListener("click", (e) => {
   updateData();
 });
 
-// Optional: Close when clicking outside the modal
 window.addEventListener("click", (e) => {
   if (e.target === addModal) {
     addModal.classList.add("hidden");
@@ -164,10 +195,13 @@ window.addEventListener("click", (e) => {
 editForm.addEventListener("submit", (e) => {
   e.preventDefault();
   if (editingIndex !== null) {
+    const original = transactions[editingIndex];
     transactions[editingIndex] = {
       name: editName.value.trim(),
       amount: parseFloat(editAmount.value),
       type: editType.value,
+      date: original.date,
+      time: original.time,
     };
     modal.classList.add("hidden");
     updateData();
@@ -176,7 +210,18 @@ editForm.addEventListener("submit", (e) => {
 
 closeModal.addEventListener("click", () => modal.classList.add("hidden"));
 
-filter.addEventListener("change", updateData);
+filter.addEventListener("change", () => {
+  if (filter.value === "All") {
+    dateFilter.value = ""; // Clear date input if "All" selected
+  }
+  renderSummary(); // Update the summary after category filter change
+  updateData(); // Update the list and charts
+});
+
+dateFilter.addEventListener("change", () => {
+  renderSummary(); // Update the summary after date filter change
+  updateData(); // Update the list and charts
+});
 
 openAddModal.addEventListener("click", () => {
   addModal.classList.remove("hidden");
