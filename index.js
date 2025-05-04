@@ -33,6 +33,26 @@ function formatAmount(amount) {
   return amount.toLocaleString("en-NG", { minimumFractionDigits: 2 });
 }
 
+function formatDate(isoDate) {
+  const date = new Date(isoDate);
+  const options = { day: "2-digit", month: "short", year: "numeric" };
+  return date.toLocaleDateString("en-GB", options); // Output: "03 May, 2025"
+}
+
+function formatTime(timeStr) {
+  const [hour, minute, second] = timeStr.split(":");
+  const date = new Date();
+  date.setHours(hour, minute, second || 0);
+  return date
+    .toLocaleTimeString("en-US", {
+      hour: "numeric",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: true,
+    })
+    .toLowerCase(); // Outputs like "1:20:45 pm"
+}
+
 function getTransactionsFromLocalStorage() {
   try {
     return JSON.parse(localStorage.getItem("transactions")) || [];
@@ -62,7 +82,8 @@ function renderList() {
         <div>
           <p><strong>${t.name}</strong></p> 
           <p>₦${formatAmount(t.amount)}</p>
-          <p>${t.date} | ${t.time}</p>
+        <p>${formatDate(t.date)} | ${formatTime(t.time)}</p>
+
         </div>
         <div>
           <button class="edit" data-index="${index}">Edit</button>
