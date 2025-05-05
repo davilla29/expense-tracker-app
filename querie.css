@@ -103,16 +103,13 @@
     gap: 0.5rem;
   }
 
-  .filter label {
-    font-size: 11rem;
-
-    color: #333;
-  }
-
   li {
+    background-color: #f9f9f9;
+    padding: 1rem;
+    line-height: 1.7;
+    border-radius: 0.4rem;
+    display: flex;
     font-size: 1.2rem;
-    justify-content: space-between;
-    align-items: center;
   }
 
   #transaction-list button {

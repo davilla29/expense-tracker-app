@@ -72,7 +72,7 @@ function renderList() {
   );
 
   if (filtered.length === 0) {
-    list.innerHTML = `<li>No transactions found for the selected filter(s).</li>`;
+    list.innerHTML = `<li>No transactions found.</li>`;
     return;
   }
 
