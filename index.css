@@ -68,6 +68,25 @@ body {
   font-size: 1.5rem;
 }
 
+.icon {
+  display: flex;
+  justify-content: flex-end;
+}
+.icon svg {
+  border-radius: 50%;
+  /* width: 100%; */
+}
+
+.income-icon svg {
+  background-color: #ecf7ef;
+  padding: 0.4rem;
+}
+
+.expense-icon svg {
+  background-color: #fceeed;
+  padding: 0.4rem;
+}
+
 .tol p {
   display: flex;
   justify-content: left;
